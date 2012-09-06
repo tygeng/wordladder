@@ -3,6 +3,14 @@
  */
 package cs2506.wordladder;
 
+import java.io.FileOutputStream;
+
+import java.io.FileInputStream;
+
+import java.io.ObjectInputStream;
+
+import java.io.ObjectOutputStream;
+
 import java.util.Arrays;
 
 import java.util.HashSet;
@@ -35,6 +43,10 @@ import java.io.BufferedReader;
 public class WordLadder {
     static PrintWriter wt;
     static BufferedReader rd;
+    static ObjectOutputStream objOut;
+    static ObjectInputStream objIn;
+    static Map<String, ArrayList<String>> map;
+    static final String CACHE = "FastLookUpMap";
 
     /**
      * @param args
@@ -44,9 +56,10 @@ public class WordLadder {
     public static void main(String[] args) throws InterruptedException,
             IOException {
         try {
+
             rd =
                     new BufferedReader(new FileReader(
-                            "short+dictionary.txt"));
+                            "medium+dictionary.txt"));
             TreeSet<String> dic = new TreeSet<String>();
             String line = rd.readLine();
             while (line != null) {
@@ -56,16 +69,16 @@ public class WordLadder {
 
             LookUpMapGenerator mpGen =
                     new LookUpMapGenerator(dic, true, true);
-            Map<String, List<String>> map = mpGen.generateMap();
+            map = mpGen.generateMap();
 
             ShortestLadderGenerator slg =
                     new ShortestLadderGenerator(map);
-            wt = new PrintWriter("output.txt");
+            System.out.println(slg.findShortestPath("and", "create"));
+//            wt = new PrintWriter("output.txt");
 //            AllLadderGenerator alg =
-                    new AllLadderGenerator(map,
-                            new ArrayList<String>(dic), wt);
+//                    new AllLadderGenerator(map,
+//                            new ArrayList<String>(dic), wt);
 
-            System.out.println(slg.findShortestPath("as", "ant"));
 //            alg.start();
             System.exit(0);
         }

@@ -230,8 +230,8 @@ public class LookUpMapGenerator {
      *            the source word
      * @return a list of words related to the source word
      */
-    private List<String> relatedWords(String word) {
-        List<String> result = new ArrayList<String>();
+    private ArrayList<String> relatedWords(String word) {
+        ArrayList<String> result = new ArrayList<String>();
         int length = word.length();
         if (variableLetter) {
             // extract the related words from first NUM_DICS-1 dictionaries
@@ -398,13 +398,13 @@ public class LookUpMapGenerator {
      * @throws InterruptedException
      *             This exception should never be thrown
      */
-    public synchronized HashMap<String, List<String>> generateMap()
+    public synchronized HashMap<String, ArrayList<String>> generateMap()
             throws InterruptedException {
         long startTime = new GregorianCalendar().getTimeInMillis();
         initializeDics();
 
-        HashMap<String, List<String>> map =
-                new HashMap<String, List<String>>();
+        HashMap<String, ArrayList<String>> map =
+                new HashMap<String, ArrayList<String>>();
 
         ExecutorService exec = Executors.newCachedThreadPool();
         int length = oridic.size() / NUM_MAP_GEN_THREAD;
@@ -445,7 +445,7 @@ public class LookUpMapGenerator {
      * @version Sep 5, 2012
      */
     class MapInitializer extends Thread {
-        private Map<String, List<String>> map;
+        private Map<String, ArrayList<String>> map;
 
         private ListIterator<String> it;
         private int end;
@@ -453,7 +453,7 @@ public class LookUpMapGenerator {
         /**
          * Constructor for MapInitializer
          *
-         * @param map
+         * @param map2
          *            the map to put word relationships
          * @param it
          *            the list iterator pointing to the place where this thread
@@ -461,9 +461,9 @@ public class LookUpMapGenerator {
          * @param end
          *            the position where this thread should stop
          */
-        public MapInitializer(Map<String, List<String>> map,
+        public MapInitializer(HashMap<String, ArrayList<String>> map2,
                 ListIterator<String> it, int end) {
-            this.map = map;
+            this.map = map2;
             this.it = it;
             this.end = end;
         }
@@ -476,7 +476,7 @@ public class LookUpMapGenerator {
             while (it.nextIndex() != end) {
                 String word = it.next();
 
-                List<String> words = relatedWords(word);
+                ArrayList<String> words = relatedWords(word);
                 if (words.size() != 0) {
 
                     synchronized (map) {

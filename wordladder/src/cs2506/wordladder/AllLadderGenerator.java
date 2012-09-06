@@ -154,7 +154,7 @@ public class AllLadderGenerator {
 
     }
 
-    private Map<String, List<String>> map; // the fast look up map
+    private Map<String, ArrayList<String>> map; // the fast look up map
 
     // The big collection of buffers. it exists because different threads may
     // not finish searching at the same time. To keep their orders correct,
@@ -180,7 +180,7 @@ public class AllLadderGenerator {
     /**
      * Constructor for AllLadderGenerator.
      *
-     * @param map
+     * @param map2
      *            the fast look up map
      * @param dic
      *            the dictionary that contains all the word one want to look for
@@ -188,7 +188,7 @@ public class AllLadderGenerator {
      * @param wt
      *            the PrintWriter to output result to
      */
-    public AllLadderGenerator(Map<String, List<String>> map,
+    public AllLadderGenerator(Map<String, ArrayList<String>> map2,
             List<String> dic, PrintWriter wt) {
         exec = Executors.newFixedThreadPool(NUM_THREAD + 1);
         this.dic = dic;
@@ -209,7 +209,7 @@ public class AllLadderGenerator {
                 });
         checker = new LinkedList<String>();
         threadCount = 0;
-        this.map = map;
+        this.map = map2;
         this.wt = wt;
 
     }

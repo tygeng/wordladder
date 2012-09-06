@@ -18,7 +18,7 @@ import java.util.Map;
  * @version Aug 30, 2012
  */
 public class ShortestLadderGenerator {
-    private Map<String, List<String>> map;
+    private Map<String, ArrayList<String>> map;
     private HashMap<String, Vertex> srcmap;
     private HashMap<String, Vertex> dstmap;
     private List<ArrayList<Vertex>> srcBuffer;
@@ -157,7 +157,7 @@ public class ShortestLadderGenerator {
      * @param map
      *            the fast look up map
      */
-    public ShortestLadderGenerator(Map<String, List<String>> map) {
+    public ShortestLadderGenerator(Map<String, ArrayList<String>> map) {
         this.map = map;
 
         findLadder = false;
@@ -173,6 +173,7 @@ public class ShortestLadderGenerator {
         dstBuffer.add(new ArrayList<Vertex>());
 
     }
+
 
     /**
      * Find the shortest path from the source word to the destination word.

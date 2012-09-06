@@ -1,15 +1,8 @@
-/**
- *
- */
 package cs2506.wordladder;
-
-import java.util.concurrent.TimeUnit;
 
 import java.util.GregorianCalendar;
 
 import java.util.LinkedHashSet;
-
-import java.io.Writer;
 
 import java.util.concurrent.ExecutorService;
 
@@ -27,138 +20,131 @@ import java.util.TreeSet;
 
 import java.util.ArrayList;
 
-import java.util.HashSet;
-
 import java.util.List;
 
 import java.util.Map;
 
 /**
+ * This class find all the ladders given a fast look up map.
  *
  * @author Tianyu Geng (tony1)
- * @version Sep 3, 2012
+ * @version Sep 5, 2012
  */
-
 public class AllLadderGenerator {
-    private static final int NUM_THREAD = 4;
+    /**
+     * The maximum number of thread allowed.
+     */
+    public static final int NUM_THREAD = 8;
 
-    public static class CheckerElement {
-        private String src;
-        private String dst;
-
-        public CheckerElement(String src, String dst) {
-            this.src = src;
-            this.dst = dst;
-        }
-
-        public boolean equals(Object other) {
-            if (!(other instanceof CheckerElement))
-                return false;
-            return src.equals(((CheckerElement) other).src)
-                    && dst.equals(((CheckerElement) other).dst);
-        }
-
-        public String getDst() {
-            return dst;
-        }
-
-        public String getSrc() {
-            return src;
-        }
-
-        public int hashCode() {
-            return src.hashCode() + dst.hashCode();
-        }
-
-        public String toString() {
-            return src + " " + dst;
-        }
-    }
-
+    /**
+     * This class represents the thread to generate all word ladders related to
+     * the given word. The class carry out a depth search and traverse through
+     * all the words and find all the ladders.
+     *
+     * @author Tianyu Geng (tony1)
+     * @version Sep 5, 2012
+     */
     public class GenThread extends Thread {
 
-        private String src;
-        private String dst;
-        private LinkedList<String> stack;
-        private HashSet<String> set;
-        private TreeSet<ArrayList<String>> ladders;
-        private final int id;
+        private String src; // the source word that word ladders will grow from
+        private LinkedHashSet<String> stack; // the stack to keep track of the
+                                             // depth search
+        private TreeSet<ArrayList<String>> ladders; // the ladders this thread
+                                                    // has generated
 
-        public GenThread(int id, String src, String dst) {
-            this.id = id;
-            stack = new LinkedList<String>();
-            set = new HashSet<String>();
+        /**
+         * Constructor for GenThread
+         *
+         * @param src
+         *            the source word from which word ladders will grow
+         * @precondition the source word must be in the fast look up map
+         */
+        public GenThread(String src) {
+
+            stack = new LinkedHashSet<String>();
             ladders =
                     new TreeSet<ArrayList<String>>(new LadderComparator());
             this.src = src;
-            this.dst = dst;
-
-            idleThreadIndicator[id] = false;
-
         }
 
-        public TreeSet<ArrayList<String>> getLadders() {
-            return ladders;
-        }
-
+        /**
+         * The run method that will execute when this thread starts to execute
+         */
         public void run() {
-
+            // add the source word to the stack
             stack.add(src);
-            set.add(src);
-            set.add(dst);
+
+            // traverse this word, this is the enter of the depth search
             traverse(src);
-            if (!ladders.isEmpty()) {
 
-                addLadders(ladders);
+            // Call the addLadder method in the parent class to add the newly
+            // found ladder to the main collection.
+            addLadders(ladders);
 
-            }
-            else {
-
-                cleanChecker(new CheckerElement(src, dst));
-            }
-            idleThreadIndicator[id] = true;
+            // this thread has finished so it calls the parent class's
+            // threadMinus to let it know it can create another thread now
             threadMinus();
-            synchronized (AllLadderGenerator.this) {
 
+            synchronized (AllLadderGenerator.this) {
+                // notify the parent class to continue creating new threads
                 AllLadderGenerator.this.notify();
 
             }
 
         }
 
-        public void traverse(String str) {
+        /**
+         * The depth search method. This is a recursive function.
+         *
+         * @param str
+         *            the word to search around
+         */
+        private void traverse(String str) {
 
             Iterator<String> it = map.get(str).iterator();
-
+            // while the word still has words around, continue to traverse them
             while (it.hasNext()) {
                 String word = it.next();
-                if (word.equals(dst)) {
+                // if the stack contains the word, it means this word has been
+                // visited, so it should not be added to the current ladder
+                if (!stack.contains(word)) {
                     stack.add(word);
-
+                    // put this new ladder to the collection of ladders in this
+                    // thread
                     ladders.add(new ArrayList<String>(stack));
-                    stack.remove(word);
-                    continue;
-
-                }
-                if (!set.contains(word)) {
-                    set.add(word);
-                    stack.add(word);
+                    // search around this new word
                     traverse(word);
-
                 }
 
             }
-            set.remove(str);
+            // remove this current word from the selection
             stack.remove(str);
         }
 
     }
 
+    /**
+     * The comparator to sort the ladders according to the last word and then
+     * ladder length.
+     *
+     * This comparator doesn't need to consider the first ladder since it is
+     * only used inside the GenThread class to sort ladders that start from the
+     * same word.
+     *
+     * @author Tianyu
+     * @version Sep 5, 2012
+     */
     static class LadderComparator implements
             Comparator<ArrayList<String>> {
 
         public int
                 compare(ArrayList<String> arg0, ArrayList<String> arg1) {
+
+            if (!arg0.get(arg0.size() - 1).equals(
+                    arg1.get(arg1.size() - 1))) {
+                return arg0.get(arg0.size() - 1).compareTo(
+                        arg1.get(arg1.size() - 1));
+            }
             int diff = arg0.size() - arg1.size();
             if (diff == 0) {
                 return 1;
@@ -168,116 +154,147 @@ public class AllLadderGenerator {
 
     }
 
-    private Map<String, List<String>> map;
+    private Map<String, List<String>> map; // the fast look up map
+
+    // The big collection of buffers. it exists because different threads may
+    // not finish searching at the same time. To keep their orders correct,
+    // Early results will be kept in this cache area.
     private volatile TreeSet<TreeSet<ArrayList<String>>> resultBuffer;
+
+    // the output writer
     private PrintWriter wt;
-    private volatile LinkedHashSet<CheckerElement> checker;
 
+    // the checker to keep track of the order of the ladders. When a thread is
+    // created, the source word it should work with is put into the checker, so
+    // that when it finished, only the ladders match the first element in the
+    // checker will be printed.
+    private volatile LinkedList<String> checker;
+
+    // the number of thread currently in execution
     private volatile int threadCount;
+
+    // the dictionary that contains all the word
     private List<String> dic;
-    private boolean sameLengthWord;
-
-    private volatile boolean[] idleThreadIndicator;
-
     private ExecutorService exec;
 
+    /**
+     * Constructor for AllLadderGenerator.
+     *
+     * @param map
+     *            the fast look up map
+     * @param dic
+     *            the dictionary that contains all the word one want to look for
+     *            ladders
+     * @param wt
+     *            the PrintWriter to output result to
+     */
     public AllLadderGenerator(Map<String, List<String>> map,
-            List<String> dic, PrintWriter wt, boolean sameLengthWord) {
-        this.sameLengthWord = sameLengthWord;
+            List<String> dic, PrintWriter wt) {
         exec = Executors.newFixedThreadPool(NUM_THREAD + 1);
         this.dic = dic;
-        resultBuffer =
-                new TreeSet<TreeSet<ArrayList<String>>>(
-                        new Comparator<TreeSet<ArrayList<String>>>() {
+        resultBuffer = new TreeSet<TreeSet<ArrayList<String>>>(
+        // This class is the ladder comparator for the big collection. It only
+        // needs to compare the first word in the ladder.
+                new Comparator<TreeSet<ArrayList<String>>>() {
 
-                            @Override
-                            public int compare(
-                                    TreeSet<ArrayList<String>> o1,
-                                    TreeSet<ArrayList<String>> o2) {
-                                int c1 =
-                                        o1.first()
-                                                .get(0)
-                                                .compareTo(
-                                                        o2.first().get(0));
-                                if (c1 == 0) {
-                                    int c2 =
-                                            o1.first()
-                                                    .get(o1.first()
-                                                            .size() - 1)
-                                                    .compareTo(
-                                                            o2.first()
-                                                                    .get(o2.first()
-                                                                            .size() - 1));
-                                    return c2;
-                                }
-                                return c1;
-                            }
+                    @Override
+                    public int compare(TreeSet<ArrayList<String>> o1,
+                            TreeSet<ArrayList<String>> o2) {
+                        int c1 =
+                                o1.first().get(0)
+                                        .compareTo(o2.first().get(0));
+                        return c1;
+                    }
 
-                        });
-        checker = new LinkedHashSet<CheckerElement>();
+                });
+        checker = new LinkedList<String>();
         threadCount = 0;
         this.map = map;
         this.wt = wt;
 
-        idleThreadIndicator = new boolean[NUM_THREAD];
-
-        for (int i = 0; i < NUM_THREAD; i++) {
-            idleThreadIndicator[i] = true;
-
-        }
     }
 
-    public synchronized void
-            addLadders(TreeSet<ArrayList<String>> ladders) {
+    /**
+     * Add a small collection of ladders to the big collection of ladders.
+     *
+     * @param ladders
+     *            the small collection of ladders
+     */
+    private synchronized void addLadders(
+            TreeSet<ArrayList<String>> ladders) {
         resultBuffer.add(ladders);
     }
 
-    public synchronized void cleanChecker(CheckerElement ce) {
-        checker.remove(ce);
-    }
+    /**
+     * Helps generating new thread to search around a given word.
+     *
+     * @param src
+     *            the word to search around
+     * @throws InterruptedException
+     *             This interruption should never been thrown
+     */
+    /**
+     * @param src
+     * @throws InterruptedException
+     */
+    private void execute(String src) throws InterruptedException {
+        // if (resultBuffer.size() > NUM_THREAD * 2) {
+        // Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        // }
+        // else {
+        // Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+        // }
 
-    public void execute(String src, String dst)
-            throws InterruptedException {
         synchronized (this) {
+            // if no thread is idle, the main thread will be blocked
             while (!threadIdle()) {
-                this.wait(100);
+                this.wait();
             }
+
+            threadPlus();
+            exec.execute(new GenThread(src));
+            return;
         }
-        for (int i = 0; i < NUM_THREAD; i++) {
-            if (idleThreadIndicator[i]) {
-                updateChecker(src, dst);
-                exec.execute(new GenThread(i, src, dst));
-                threadPlus();
-                return;
-            }
-        }
+
     }
 
-    public synchronized void printLadders() {
+    /**
+     * Print ladders in the resultBuffer if the orders are correct
+     */
+    private synchronized void printLadders() {
+
         if (resultBuffer.isEmpty()) {
             return;
         }
 
         TreeSet<ArrayList<String>> currentFirst = resultBuffer.first();
-        Iterator<CheckerElement> it = checker.iterator();
-        CheckerElement first = it.next();
+        String first = checker.getFirst();
 
-        if (first.getSrc().equals(currentFirst.first().get(0))
-                && first.getDst().equals(
-                        currentFirst.first().get(
-                                currentFirst.first().size() - 1))) {
-            cleanChecker(first);
+        while (first.equals(currentFirst.first().get(0))) {
+            checker.removeFirst();
             resultBuffer.remove(currentFirst);
             printLadders(currentFirst);
+            System.out.println("Finished printing ladders for " + first);
+            if (checker.isEmpty()) {
+                break;
+            }
+            first = checker.getFirst();
         }
     }
 
-    public synchronized void printLadders(
+    /**
+     * Print the given ladders to the PrintWriter wt. This method will format
+     * the output according to the requirement.
+     *
+     * @param ladders
+     *            the given ladder
+     */
+    private synchronized void printLadders(
             TreeSet<ArrayList<String>> ladders) {
         Iterator<ArrayList<String>> it = ladders.iterator();
         StringBuilder sb = new StringBuilder();
         while (it.hasNext()) {
-            ArrayList ladder = it.next();
+            ArrayList<String> ladder = it.next();
             Iterator<String> ita = ladder.iterator();
             sb.append(ita.next());
             while (ita.hasNext()) {
@@ -285,69 +302,111 @@ public class AllLadderGenerator {
             }
             sb.append('\n');
         }
+
         wt.print(sb.toString());
         wt.flush();
     }
 
+    /**
+     * Search all the ladders related to the source word
+     *
+     * @param src
+     *            the source word
+     * @throws InterruptedException
+     *             this exception should not be thrown
+     */
+    public void start(String src) throws InterruptedException {
+
+        if (!map.containsKey(src)) {
+            return;
+        }
+        execute(src);
+        printLadders();
+        synchronized (this) {
+            while (threadCount != 0) {
+                this.wait();
+            }
+        }
+
+        while (!checker.isEmpty()) {
+            printLadders();
+        }
+    }
+
+    /**
+     * Start the process to search for all ladders. This method is the entry to
+     * the seraching process.
+     *
+     * @throws InterruptedException
+     *             this exception should never been thrown
+     */
     public void start() throws InterruptedException {
         long startTime = new GregorianCalendar().getTimeInMillis();
         Iterator<String> srcIt = dic.iterator();
 
         while (srcIt.hasNext()) {
             String src = srcIt.next();
-            System.out.println("Building ladders for " + src);
-            Iterator<String> dstIt = dic.iterator();
+
             if (!map.containsKey(src)) {
                 continue;
             }
-            while (dstIt.hasNext()) {
-                String dst = dstIt.next();
-                if (sameLengthWord && src.length() != dst.length()) {
-                    continue;
-                }
+            System.out.println("Building ladders for " + src);
+            // put the word into the checker so that the checker will know the
+            // order of words
+            updateChecker(src);
 
-                if (src.equals(dst) || !map.containsKey(dst)) {
-                    continue;
-                }
+            execute(src);
+            printLadders();
 
-                execute(src, dst);
-                printLadders();
-
-            }
         }
         synchronized (this) {
 
             while (threadCount != 0) {
+
                 this.wait();
 
             }
-
         }
-
-        while (!checker.isEmpty()) {
+        while (checker.size() != 0) {
             printLadders();
         }
-
         long endTime = new GregorianCalendar().getTimeInMillis();
         System.out.println("Generating all ladders used "
                 + (endTime - startTime) / 1000.0 + " seconds.");
 
     }
 
-    public synchronized boolean threadIdle() {
-        return threadCount != NUM_THREAD;
+    /**
+     * Check whether there is any idle thread.
+     *
+     * @return whether there are idle thread
+     */
+    private synchronized boolean threadIdle() {
+        return threadCount <= NUM_THREAD;
     }
 
-    public synchronized void threadMinus() {
+    /**
+     * Decrease the number of active thread.
+     */
+    private synchronized void threadMinus() {
         threadCount--;
     }
 
-    public synchronized void threadPlus() {
+    /**
+     * Increase the number of active thread.
+     */
+    private synchronized void threadPlus() {
         threadCount++;
     }
 
-    public synchronized void updateChecker(String start, String end) {
-        checker.add(new CheckerElement(start, end));
+    /**
+     * Put the word into the checker
+     *
+     * @param start
+     *            the word to be put into the checker
+     */
+    private synchronized void updateChecker(String start) {
+        checker.add(start);
 
     }
 }

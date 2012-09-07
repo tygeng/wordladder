@@ -34,7 +34,7 @@ public class AllLadderGenerator {
     /**
      * The maximum number of thread allowed.
      */
-    public static final int NUM_THREAD = 8;
+    public static final int NUM_THREAD = 4;
 
     /**
      * This class represents the thread to generate all word ladders related to
@@ -44,7 +44,7 @@ public class AllLadderGenerator {
      * @author Tianyu Geng (tony1)
      * @version Sep 5, 2012
      */
-    public class GenThread extends Thread {
+    class GenThread extends Thread {
 
         private String src; // the source word that word ladders will grow from
         private LinkedHashSet<String> stack; // the stack to keep track of the
@@ -83,10 +83,11 @@ public class AllLadderGenerator {
 
             // this thread has finished so it calls the parent class's
             // threadMinus to let it know it can create another thread now
-            threadMinus();
+
 
             synchronized (AllLadderGenerator.this) {
                 // notify the parent class to continue creating new threads
+                threadCount--;
                 AllLadderGenerator.this.notify();
 
             }
@@ -151,7 +152,6 @@ public class AllLadderGenerator {
             }
             return diff;
         }
-
     }
 
     private Map<String, ArrayList<String>> map; // the fast look up map
@@ -247,11 +247,13 @@ public class AllLadderGenerator {
 
         synchronized (this) {
             // if no thread is idle, the main thread will be blocked
-            while (!threadIdle()) {
+            while (threadCount>=NUM_THREAD) {
                 this.wait();
             }
-
-            threadPlus();
+            printLadders();
+//            System.out.println("Creating new thread for "+ src);
+            threadCount++;
+            checker.add(src);
             exec.execute(new GenThread(src));
             return;
         }
@@ -261,8 +263,8 @@ public class AllLadderGenerator {
     /**
      * Print ladders in the resultBuffer if the orders are correct
      */
-    private synchronized void printLadders() {
-
+    private void printLadders() {
+//        System.out.println("inside printladders()");
         if (resultBuffer.isEmpty()) {
             return;
         }
@@ -273,6 +275,7 @@ public class AllLadderGenerator {
         while (first.equals(currentFirst.first().get(0))) {
             checker.removeFirst();
             resultBuffer.remove(currentFirst);
+//            System.out.println("before printladders(TreeSet<ArrayList<String>> " + first+" )");
             printLadders(currentFirst);
             System.out.println("Finished printing ladders for " + first);
             if (checker.isEmpty()) {
@@ -289,10 +292,12 @@ public class AllLadderGenerator {
      * @param ladders
      *            the given ladder
      */
-    private synchronized void printLadders(
+    private void printLadders(
             TreeSet<ArrayList<String>> ladders) {
+//        System.out.println("inside printladders(TreeSet<ArrayList<String>> )");
         Iterator<ArrayList<String>> it = ladders.iterator();
         StringBuilder sb = new StringBuilder();
+//        System.out.println("before entering the while loop");
         while (it.hasNext()) {
             ArrayList<String> ladder = it.next();
             Iterator<String> ita = ladder.iterator();
@@ -302,9 +307,10 @@ public class AllLadderGenerator {
             }
             sb.append('\n');
         }
-
+//        System.out.println("before printing to the output file");
         wt.print(sb.toString());
         wt.flush();
+//        System.out.println("after flushing");
     }
 
     /**
@@ -353,18 +359,17 @@ public class AllLadderGenerator {
             System.out.println("Building ladders for " + src);
             // put the word into the checker so that the checker will know the
             // order of words
-            updateChecker(src);
 
+//            System.out.println("Before executing "+src);
             execute(src);
-            printLadders();
+//            System.out.println("After executing " + src);
+
 
         }
         synchronized (this) {
 
             while (threadCount != 0) {
-
                 this.wait();
-
             }
         }
         while (checker.size() != 0) {
@@ -373,40 +378,5 @@ public class AllLadderGenerator {
         long endTime = new GregorianCalendar().getTimeInMillis();
         System.out.println("Generating all ladders used "
                 + (endTime - startTime) / 1000.0 + " seconds.");
-
-    }
-
-    /**
-     * Check whether there is any idle thread.
-     *
-     * @return whether there are idle thread
-     */
-    private synchronized boolean threadIdle() {
-        return threadCount <= NUM_THREAD;
-    }
-
-    /**
-     * Decrease the number of active thread.
-     */
-    private synchronized void threadMinus() {
-        threadCount--;
-    }
-
-    /**
-     * Increase the number of active thread.
-     */
-    private synchronized void threadPlus() {
-        threadCount++;
-    }
-
-    /**
-     * Put the word into the checker
-     *
-     * @param start
-     *            the word to be put into the checker
-     */
-    private synchronized void updateChecker(String start) {
-        checker.add(start);
-
     }
 }

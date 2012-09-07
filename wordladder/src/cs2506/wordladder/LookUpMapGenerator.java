@@ -230,7 +230,7 @@ public class LookUpMapGenerator {
      *            the source word
      * @return a list of words related to the source word
      */
-    private ArrayList<String> relatedWords(String word) {
+    public ArrayList<String> relatedWords(String word) {
         ArrayList<String> result = new ArrayList<String>();
         int length = word.length();
         if (variableLetter) {
@@ -277,6 +277,7 @@ public class LookUpMapGenerator {
         if (variableLength) {
             // for +1 letter words:
             int longer = length + 1;
+            HashSet<String> set = new HashSet<String>();
             for (int i = 0; i < NUM_DICS - 1 && i < longer; i++) {
                 // the start and end of the interesting area in the TreeSet
                 char[] start = new char[longer];
@@ -297,10 +298,12 @@ public class LookUpMapGenerator {
                                         new String(end)).iterator();
                 // add all related words to the resulted list from the
                 // interesting area
+
                 while (it.hasNext()) {
                     String relatedWord = it.next();
-                    if (relatedWord.length() == longer) {
+                    if (relatedWord.length() == longer && !set.contains(relatedWord)) {
                         result.add(relatedWord);
+                        set.add(relatedWord);
                     }
                 }
             }

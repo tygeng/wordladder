@@ -45,7 +45,8 @@ public class WordLadder {
     static BufferedReader rd;
     static ObjectOutputStream objOut;
     static ObjectInputStream objIn;
-    static Map<String, ArrayList<String>> map;
+    static Map<String, ArrayList<String>> letterMap;
+    static Map<String, ArrayList<String>> lengthMap;
     static final String CACHE = "FastLookUpMap";
 
     /**
@@ -59,7 +60,7 @@ public class WordLadder {
 
             rd =
                     new BufferedReader(new FileReader(
-                            "medium+dictionary.txt"));
+                            "short+dictionary.txt"));
             TreeSet<String> dic = new TreeSet<String>();
             String line = rd.readLine();
             while (line != null) {
@@ -67,19 +68,29 @@ public class WordLadder {
                 line = rd.readLine();
             }
 
-            LookUpMapGenerator mpGen =
-                    new LookUpMapGenerator(dic, true, true);
-            map = mpGen.generateMap();
+            LookUpMapGenerator ltMpGen =
+                    new LookUpMapGenerator(dic, true, false);
+            letterMap = ltMpGen.generateMap();
+            LookUpMapGenerator lthMpGen =
+                    new LookUpMapGenerator(dic, false, true);
+            lengthMap = lthMpGen.generateMap();
 
-            ShortestLadderGenerator slg =
-                    new ShortestLadderGenerator(map);
-            System.out.println(slg.findShortestPath("and", "create"));
-//            wt = new PrintWriter("output.txt");
-//            AllLadderGenerator alg =
-//                    new AllLadderGenerator(map,
-//                            new ArrayList<String>(dic), wt);
-
-//            alg.start();
+            wt = new PrintWriter("output.txt");
+            AllRelatedWordsGenerator arwg =
+                    new AllRelatedWordsGenerator(new ArrayList<String>(
+                            dic), letterMap, lengthMap, wt);
+            arwg.start2D();
+            arwg.start2C(new PrintWriter(System.out));
+            System.out.println("############################## "+ lengthMap.get("be"));
+            System.out.println(lthMpGen.relatedWords("be"));
+            wt.close();
+            // AllLadderGenerator alg =
+            // new AllLadderGenerator(map,
+            // new ArrayList<String>(dic), wt);
+            // alg.start();
+            // ShortestLadderGenerator slg =
+            // new ShortestLadderGenerator(map);
+            // System.out.println(slg.findShortestPath("and", "create"));
             System.exit(0);
         }
         finally {

@@ -30,7 +30,9 @@ import java.util.Map;
  */
 public class AllLadderGenerator {
     /**
-     * The maximum number of thread allowed.
+     * The maximum number of thread allowed. 4 is good enough to achieve
+     * performance since the bottle neck for this program to run on rlogin
+     * cluster is I/O speed.
      */
     public static final int NUM_THREAD = 4;
 

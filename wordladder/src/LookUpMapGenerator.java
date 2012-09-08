@@ -47,14 +47,17 @@ public class LookUpMapGenerator {
 
     /**
      * The number of sub dictionaries. 5 is the optimized number for most
-     * scenario.
+     * scenario. More dictionaries are unnecessary since this procedure is
+     * already very fast.
      */
     public static final int NUM_DICS = 5;
 
     /**
-     * The number of fast loop up map generating thread.
+     * The number of fast loop up map generating thread. Since the cluster has
+     * 16 cores, I used can use 15 of them for generating the fast look up map
+     * and one as the main thread to manage jobs.
      */
-    public static final int NUM_MAP_GEN_THREAD = 8;
+    public static final int NUM_MAP_GEN_THREAD = 15;
 
     // True if word length can vary
     private boolean variableLength;

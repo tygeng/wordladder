@@ -1,3 +1,5 @@
+import java.util.GregorianCalendar;
+
 import java.io.FileOutputStream;
 
 import java.io.FileInputStream;
@@ -67,6 +69,7 @@ public class WordLadder {
     public static void main(String[] args) throws InterruptedException,
             IOException {
         try {
+            long startTime = new GregorianCalendar().getTimeInMillis();
             part1 = new PrintWriter("part1.txt");
             part2a = new PrintWriter("part2a.txt");
             part2b = new PrintWriter("part2b.txt");
@@ -130,6 +133,9 @@ public class WordLadder {
             arwg.start2D();
             part2d.close();
             System.out.println("All parts have been finished.");
+            long endTime = new GregorianCalendar().getTimeInMillis();
+            System.out.println("The whole procedure takes "
+                    + ((endTime - startTime) / 1000.0) + " seconds.");
             System.exit(0);
         }
         catch (IOException e) {

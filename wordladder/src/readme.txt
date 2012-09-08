@@ -18,7 +18,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 21.1-b02, mixed mode)
 ===========================================================================
 How to compile and run
 
-Please finish reading the whole document before runing the program.
+Please finish reading the whole document before running the program.
 
 This is a command line program. It does NOT have a GUI. To compile and run
 the program, follow the steps below:
@@ -48,9 +48,9 @@ the program, follow the steps below:
 Important notice:
 
 This program may pause during execution. If this happens, please press
-Ctrl+Z to temparorily stop the execution. Then, use command "fg" to switch
+Ctrl+Z to temporarily stop the execution. Then, use command "fg" to switch
 back to the program and the program should continue to run.
-If pausing happens again, just Ctrl+Z and "rg" back again.
+If pausing happens again, just Ctrl+Z and "fg" back again.
 
 However, please wait patiently after part 2b is finished. The following
 message should be displayed at that time:

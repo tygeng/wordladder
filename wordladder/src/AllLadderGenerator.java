@@ -372,6 +372,7 @@ public class AllLadderGenerator {
      *             this exception should never been thrown
      */
     public void start() throws InterruptedException {
+
         long startTime = new GregorianCalendar().getTimeInMillis();
         Iterator<String> srcIt = dic.iterator();
 
@@ -383,7 +384,8 @@ public class AllLadderGenerator {
                 continue;
             }
             System.out.println("Building ladders for " + src);
-            // put the word into the checker so that the checker will know the
+            // put the word into the checker so that the checker will know
+            // the
             // order of words
 
             // System.out.println("Before executing "+src);
@@ -403,6 +405,7 @@ public class AllLadderGenerator {
         long endTime = new GregorianCalendar().getTimeInMillis();
         System.out.println("Generating all ladders used "
                 + (endTime - startTime) / 1000.0 + " seconds.");
-        System.out.println("Cleaning cache, please wait...");
+        System.out.println("Cleaning Cache, please wait...");
+
     }
 }

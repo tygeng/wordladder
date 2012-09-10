@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -170,7 +169,6 @@ public class ShortestLadderGenerator {
 
     }
 
-
     /**
      * Find the shortest path from the source word to the destination word.
      *
@@ -210,18 +208,22 @@ public class ShortestLadderGenerator {
         dstBuffer.get(bufferIndex).add(dst);
         // if no more words are added to the buffer list, it means the two nets
         // have grown to their biggest size
-        while (!findLadder && srcBuffer.get(bufferIndex).size() != 0
+        while (srcBuffer.get(bufferIndex).size() != 0
                 && dstBuffer.get(bufferIndex).size() != 0) {
 
             if (srcBuffer.get(bufferIndex).size() != 0) {
-                findLadder |= grow(true);
+                if (grow(true)) {
+                    findLadder = true;
+                    break;
+                }
             }
             if (dstBuffer.get(bufferIndex).size() != 0) {
-                findLadder |= grow(false);
+                if (grow(false)) {
+                    findLadder = true;
+                    break;
+                }
             }
-            if (findLadder) {
-                break;
-            }
+
             // clear the previous list
             srcBuffer.get(bufferIndex).clear();
             dstBuffer.get(bufferIndex).clear();

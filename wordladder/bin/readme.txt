@@ -70,6 +70,34 @@ increases significantly.
 
 By now, I haven't found a cure for this issue.
 ===========================================================================
+A little extra stuff
+
+If you use some words as the command arguments when running WordLadder, the
+program will output the shortest ladder with both letter permutation and
++/- word length variation. Use the long dictionary as an example. If you
+type the following commands after the program has been compiled:
+
+  java WordLadder hello world what is going on
+
+This would be the output:
+
+  ..
+  hello, hollo, holl, hold, wold, world
+  what, hat, at, as, is
+  going, gong, gon, on
+
+You can specify a certain .txt file as the dictionary by using "-d"
+parameter like this:
+
+  java WordLadder -d medium+dictionary.txt
+
+Then, the program will create a serialized hashMap file on the disk called
+".map". If you don't specify "-d" parameter, then, the next time you run the
+program with more than two words as command line arguments, the program will consult the dictionary used during the previous execution.
+
+Have fun with it. With the long dictioanry, almost any two words can be
+connected by a word ladder.
+
 
 
 

@@ -197,7 +197,7 @@ public class ShortestLadderGenerator {
      */
     public String findShortestPath(String source, String destination) {
         if (!map.containsKey(source) || !map.containsKey(destination))
-            return null;
+            return "No ladder found!";
         StringBuilder sb = new StringBuilder();
         Vertex src = new Vertex(source, null, null, true);
         Vertex dst = new Vertex(destination, null, null, false);
@@ -249,7 +249,7 @@ public class ShortestLadderGenerator {
             findLadder = false;
             return sb.toString();
         }
-        return null;
+        return "No ladders found!";
 
     }
 

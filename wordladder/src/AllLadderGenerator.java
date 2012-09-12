@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 import java.util.GregorianCalendar;
 
 import java.util.LinkedHashSet;
@@ -37,6 +39,52 @@ public class AllLadderGenerator {
     public static final int NUM_THREAD = 4;
 
     /**
+     * The order less ladder class.
+     *
+     * @author Tianyu Geng
+     * @version Sep 11, 2012
+     */
+    class Ladders extends ArrayList<String> {
+        /**
+         * Constructor for Ladders. A explicit Ladders class is to make sure the
+         * HashSet regards ladders with same words but different orders the same
+         * ladders.
+         *
+         * @param stack
+         *            the stack to initialize this ladder with
+         */
+        public Ladders(LinkedHashSet<String> stack) {
+            super(stack);
+        }
+
+        public int hashCode() {
+            int result = 0;
+            for (String word : this) {
+                result += word.hashCode();
+            }
+            return result;
+        }
+
+        public boolean equals(Object other) {
+            if (other == null
+                    || !this.getClass().equals(other.getClass())
+                    || this.size() != ((Ladders) other).size()
+                    || !this.get(this.size() - 1).equals(
+                            ((Ladders) other).get(this.size() - 1))) {
+                return false;
+            }
+            Ladders o = (Ladders) other;
+            for (String word : o) {
+                if (!this.contains(word)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+    }
+
+    /**
      * This class represents the thread to generate all word ladders related to
      * the given word. The class carry out a depth search and traverse through
      * all the words and find all the ladders.
@@ -49,8 +97,9 @@ public class AllLadderGenerator {
         private String src; // the source word that word ladders will grow from
         private LinkedHashSet<String> stack; // the stack to keep track of the
                                              // depth search
-        private TreeSet<ArrayList<String>> ladders; // the ladders this thread
-                                                    // has generated
+        private TreeSet<Ladders> ladders; // the ladders this thread
+                                          // has generated
+        private HashSet<Ladders> set;
 
         /**
          * Constructor for GenThread
@@ -62,8 +111,8 @@ public class AllLadderGenerator {
         public GenThread(String src) {
 
             stack = new LinkedHashSet<String>();
-            ladders =
-                    new TreeSet<ArrayList<String>>(new LadderComparator());
+            ladders = new TreeSet<Ladders>(new LadderComparator());
+
             this.src = src;
         }
 
@@ -73,6 +122,7 @@ public class AllLadderGenerator {
         public void run() {
             // add the source word to the stack
             stack.add(src);
+            set = new HashSet<Ladders>();
 
             // traverse this word, this is the enter of the depth search
             traverse(src);
@@ -111,7 +161,11 @@ public class AllLadderGenerator {
                     stack.add(word);
                     // put this new ladder to the collection of ladders in this
                     // thread
-                    ladders.add(new ArrayList<String>(stack));
+                    Ladders currentLadders = new Ladders(stack);
+                    if (set.add(currentLadders)) {
+                        ladders.add(currentLadders);
+
+                    }
                     // search around this new word
                     traverse(word);
                 }
@@ -158,7 +212,7 @@ public class AllLadderGenerator {
     // The big collection of buffers. it exists because different threads may
     // not finish searching at the same time. To keep their orders correct,
     // Early results will be kept in this cache area.
-    private volatile TreeSet<TreeSet<ArrayList<String>>> resultBuffer;
+    private volatile TreeSet<TreeSet<Ladders>> resultBuffer;
 
     // the output writer
     private PrintWriter wt;
@@ -198,14 +252,14 @@ public class AllLadderGenerator {
             List<String> dic, PrintWriter wt, int certainLength) {
         exec = Executors.newFixedThreadPool(NUM_THREAD + 1);
         this.dic = dic;
-        resultBuffer = new TreeSet<TreeSet<ArrayList<String>>>(
+        resultBuffer = new TreeSet<TreeSet<Ladders>>(
         // This class is the ladder comparator for the big collection. It only
         // needs to compare the first word in the ladder.
-                new Comparator<TreeSet<ArrayList<String>>>() {
+                new Comparator<TreeSet<Ladders>>() {
 
                     @Override
-                    public int compare(TreeSet<ArrayList<String>> o1,
-                            TreeSet<ArrayList<String>> o2) {
+                    public int compare(TreeSet<Ladders> o1,
+                            TreeSet<Ladders> o2) {
                         int c1 =
                                 o1.first().get(0)
                                         .compareTo(o2.first().get(0));
@@ -245,8 +299,7 @@ public class AllLadderGenerator {
      * @param ladders
      *            the small collection of ladders
      */
-    private synchronized void addLadders(
-            TreeSet<ArrayList<String>> ladders) {
+    private synchronized void addLadders(TreeSet<Ladders> ladders) {
         resultBuffer.add(ladders);
     }
 
@@ -294,7 +347,7 @@ public class AllLadderGenerator {
             return;
         }
 
-        TreeSet<ArrayList<String>> currentFirst = resultBuffer.first();
+        TreeSet<Ladders> currentFirst = resultBuffer.first();
         String first = checker.getFirst();
 
         while (first.equals(currentFirst.first().get(0))) {
@@ -318,9 +371,9 @@ public class AllLadderGenerator {
      * @param ladders
      *            the given ladder
      */
-    private void printLadders(TreeSet<ArrayList<String>> ladders) {
+    private void printLadders(TreeSet<Ladders> ladders) {
         // System.out.println("inside printladders(TreeSet<ArrayList<String>> )");
-        Iterator<ArrayList<String>> it = ladders.iterator();
+        Iterator<Ladders> it = ladders.iterator();
         StringBuilder sb = new StringBuilder();
         // System.out.println("before entering the while loop");
         while (it.hasNext()) {

@@ -56,6 +56,7 @@ public class WordLadder {
     // Source and destination words
     static String src;
     static String dst;
+    static int length;
 
     /**
      * The entry point of this program
@@ -86,7 +87,7 @@ public class WordLadder {
                 dic = new TreeSet<String>();
                 src = input.readLine();
                 dst = input.readLine();
-
+                length = Integer.parseInt(input.readLine());
                 if (src == null || dst == null
                         || src.length() != dst.length()) {
                     System.err.println("Input file corrupted.");
@@ -122,7 +123,7 @@ public class WordLadder {
                 // --------------------------------------------------------
                 AllLadderGenerator alg2a =
                         new AllLadderGenerator(vLetterMap, dicList,
-                                part2a, src.length());
+                                part2a, length);
                 alg2a.start();
                 // Part 2b
                 // --------------------------------------------------------

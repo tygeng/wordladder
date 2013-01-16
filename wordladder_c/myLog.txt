@@ -1,0 +1,107 @@
+Welcome to use Word Ladder Finder. Program starting...
+boatel, boated, bolted, belted, belled, belles, selles, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boated, bolted, bolled, belled, belles, selles, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, beaver, heaver, heaves, helves, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, belter, belier, eelier, eerier, aerier, aeries, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, belter, belier, eelier, eerier, aerier, aeries, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, heater, heaver, heaves, helves, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, seater, sealer, seller, selles, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, bolter, belter, belier, eelier, eerier, aerier, aeries, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, bolter, belter, belier, eelier, eerier, aerier, aeries, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, bolter, bolder, solder, solver, solves, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+faxed, fared, fares, feres, ferns, terns
+faxed, fared, fares, tares, tarns, terns
+faxed, fared, tared, tares, tarns, terns
+faxed, faxes, fares, feres, ferns, terns
+faxed, faxes, fares, tares, tarns, terns
+faxed, faxes, taxes, tares, tarns, terns
+faxed, taxed, tared, tares, tarns, terns
+faxed, taxed, taxes, tares, tarns, terns
+No ladder found.
+frigs, trigs, trips, tripe, trice, twice
+frigs, trigs, twigs, twins, twine, twice
+minae, minas, mines, mikes, mokes, tokes, toked, tsked, asked
+minae, minas, mines, mikes, tikes, tokes, toked, tsked, asked
+minae, minas, mines, mined, tined, toned, toked, tsked, asked
+minae, minas, mines, tines, tikes, tokes, toked, tsked, asked
+minae, minas, mines, tines, tined, toned, toked, tsked, asked
+minae, minas, mines, tines, tones, tokes, toked, tsked, asked
+minae, minas, mines, tines, tones, toned, toked, tsked, asked
+No ladder found.
+No ladder found.
+fifer, fifes, files, miles, milts, mitts, motts, motte, lotte
+fifer, fifes, files, miles, milts, molts, motts, motte, lotte
+fifer, fifes, files, miles, mites, mitts, motts, motte, lotte
+fifer, fifes, files, miles, mites, motes, motts, motte, lotte
+fifer, fifes, files, miles, moles, molts, motts, motte, lotte
+fifer, fifes, files, miles, moles, motes, motts, motte, lotte
+fifer, fifes, fines, mines, mints, mitts, motts, motte, lotte
+fifer, fifes, fines, mines, mites, mitts, motts, motte, lotte
+fifer, fifes, fines, mines, mites, motes, motts, motte, lotte
+fifer, fifes, fires, fores, forts, morts, motts, motte, lotte
+fifer, fifes, fires, fores, mores, morts, motts, motte, lotte
+fifer, fifes, fires, fores, mores, motes, motts, motte, lotte
+fifer, fifes, fires, mires, mites, mitts, motts, motte, lotte
+fifer, fifes, fires, mires, mites, motes, motts, motte, lotte
+fifer, fifes, fires, mires, mores, morts, motts, motte, lotte
+fifer, fifes, fires, mires, mores, motes, motts, motte, lotte
+fifer, fifes, fixes, mixes, mites, mitts, motts, motte, lotte
+fifer, fifes, fixes, mixes, mites, motes, motts, motte, lotte
+fifer, fifes, wifes, wites, mites, mitts, motts, motte, lotte
+fifer, fifes, wifes, wites, mites, motes, motts, motte, lotte
+fifer, filer, files, miles, milts, mitts, motts, motte, lotte
+fifer, filer, files, miles, milts, molts, motts, motte, lotte
+fifer, filer, files, miles, mites, mitts, motts, motte, lotte
+fifer, filer, files, miles, mites, motes, motts, motte, lotte
+fifer, filer, files, miles, moles, molts, motts, motte, lotte
+fifer, filer, files, miles, moles, motes, motts, motte, lotte
+fifer, filer, miler, miles, milts, mitts, motts, motte, lotte
+fifer, filer, miler, miles, milts, molts, motts, motte, lotte
+fifer, filer, miler, miles, mites, mitts, motts, motte, lotte
+fifer, filer, miler, miles, mites, motes, motts, motte, lotte
+fifer, filer, miler, miles, moles, molts, motts, motte, lotte
+fifer, filer, miler, miles, moles, motes, motts, motte, lotte
+fifer, filer, miler, miter, mites, mitts, motts, motte, lotte
+fifer, filer, miler, miter, mites, motes, motts, motte, lotte
+fifer, finer, fines, mines, mints, mitts, motts, motte, lotte
+fifer, finer, fines, mines, mites, mitts, motts, motte, lotte
+fifer, finer, fines, mines, mites, motes, motts, motte, lotte
+fifer, finer, miner, mines, mints, mitts, motts, motte, lotte
+fifer, finer, miner, mines, mites, mitts, motts, motte, lotte
+fifer, finer, miner, mines, mites, motes, motts, motte, lotte
+fifer, finer, miner, miter, mites, mitts, motts, motte, lotte
+fifer, finer, miner, miter, mites, motes, motts, motte, lotte
+fifer, firer, fires, fores, forts, morts, motts, motte, lotte
+fifer, firer, fires, fores, mores, morts, motts, motte, lotte
+fifer, firer, fires, fores, mores, motes, motts, motte, lotte
+fifer, firer, fires, mires, mites, mitts, motts, motte, lotte
+fifer, firer, fires, mires, mites, motes, motts, motte, lotte
+fifer, firer, fires, mires, mores, morts, motts, motte, lotte
+fifer, firer, fires, mires, mores, motes, motts, motte, lotte
+fifer, fixer, fixes, mixes, mites, mitts, motts, motte, lotte
+fifer, fixer, fixes, mixes, mites, motes, motts, motte, lotte
+fifer, fixer, mixer, miter, mites, mitts, motts, motte, lotte
+fifer, fixer, mixer, miter, mites, motes, motts, motte, lotte
+fifer, fixer, mixer, mixes, mites, mitts, motts, motte, lotte
+fifer, fixer, mixer, mixes, mites, motes, motts, motte, lotte
+fifer, lifer, liter, miter, mites, mitts, motts, motte, lotte
+fifer, lifer, liter, miter, mites, motes, motts, motte, lotte
+staff, stuff, scuff, scurf, scarf, scars, soars, soaks, socks, hocks, honks, honky, hinky
+staff, stuff, scuff, scurf, scarf, scars, soars, soaks, sooks, hooks, honks, honky, hinky
+staff, stuff, scuff, scurf, scarf, scars, soars, soaks, sooks, hooks, hooky, honky, hinky
+missy, misty, milty, melty, meaty, meats, seats, septs, septa, sepia, sepic
+missy, misty, milty, melty, melts, meats, seats, septs, septa, sepia, sepic
+missy, misty, milty, milts, melts, meats, seats, septs, septa, sepia, sepic
+missy, misty, mists, fists, fests, feats, seats, septs, septa, sepia, sepic
+missy, misty, mists, fists, fiats, feats, seats, septs, septa, sepia, sepic
+missy, misty, mists, hists, hests, heats, seats, septs, septa, sepia, sepic
+missy, misty, mists, milts, melts, meats, seats, septs, septa, sepia, sepic
+missy, misty, mists, mosts, moats, meats, seats, septs, septa, sepia, sepic
+missy, misty, milty, melty, meaty, meats, seats, septs, septa, sepia, sepic
+missy, misty, milty, melty, melts, meats, seats, septs, septa, sepia, sepic
+missy, misty, milty, milts, melts, meats, seats, septs, septa, sepia, sepic
+missy, misty, mists, fists, fests, feats, seats, septs, septa, sepia, sepic
+missy, misty, mists, fists, fiats, feats, seats, septs, septa, sepia, sepic
+missy, misty, mists, hists, hests, heats, seats, septs, septa, sepia, sepic
+missy, misty, mists, milts, melts, meats, seats, septs, septa, sepia, sepic
+missy, misty, mists, mosts, moats, meats, seats, septs, septa, sepia, sepic

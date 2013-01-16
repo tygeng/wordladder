@@ -41,9 +41,12 @@ the program, follow the steps below:
 
     java WordLadder
 
-  With the "short+dictionary.txt" The program should run for less than one
-  minute before it finishes all parts.
-
+With the "short+dictionary.txt" The program should run for less than one
+minute before it finishes both part 1 and part 2. 
+However, be aware that the program has a preparation process that will 
+generate a hash map to rapidly finish part 2. Therefore, this preparation 
+time may take a few seconds before the program finishes part 1, which also 
+uses the hash map for fast look up.
 ===========================================================================
 Important notice:
 
@@ -93,10 +96,12 @@ parameter like this:
 
 Then, the program will create a serialized hashMap file on the disk called
 ".map". If you don't specify "-d" parameter, then, the next time you run the
-program with more than two words as command line arguments, the program will consult the dictionary used during the previous execution.
+program with more than two words as command line arguments, the program will
+consult the dictionary used during the previous execution.
 
 Have fun with it. With the long dictioanry, almost any two words can be
 connected by a word ladder.
+
 
 
 

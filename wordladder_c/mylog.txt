@@ -1,0 +1,16 @@
+boatel, boated, bolted, belted, belled, belles, selles, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boated, bolted, bolled, belled, belles, selles, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, beaver, heaver, heaves, helves, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, belter, belier, eelier, eerier, aerier, aeries, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, heater, heaver, heaves, helves, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, beater, seater, sealer, seller, selles, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, bolter, belter, belier, eelier, eerier, aerier, aeries, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+boatel, boater, bolter, bolder, solder, solver, solves, selves, serves, series, scries, scrips, scraps, scrape, serape, seraph, teraph
+faxed, fared, fares, feres, ferns, terns
+faxed, fared, fares, tares, tarns, terns
+faxed, fared, tared, tares, tarns, terns
+faxed, faxes, fares, feres, ferns, terns
+faxed, faxes, fares, tares, tarns, terns
+faxed, faxes, taxes, tares, tarns, terns
+faxed, taxed, tared, tares, tarns, terns
+faxed, taxed, taxes, tares, tarns, terns
